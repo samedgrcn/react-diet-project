@@ -129,8 +129,6 @@ const Appointments = ({currentUser}) => {
   };
   
   
-  
-  
 const handleDeleteAppointment = async (appointmentId) => {
   try {
     const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
@@ -159,9 +157,6 @@ const handleDeleteAppointment = async (appointmentId) => {
 };
 
 
-  
-  
-  
 
   return (
     <div className="appointments-container">

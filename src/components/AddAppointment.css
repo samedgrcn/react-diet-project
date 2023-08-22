@@ -1,0 +1,36 @@
+.add-appointment-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .add-appointment-container label {
+    font-weight: bold;
+  }
+  .add-appointment-container input{
+    padding: 5px;
+    width: 368px;
+  }
+  .add-appointment-container textarea{
+    padding: 15px;
+    width: 350px;
+  }
+  .add-appointment-container input,
+  .add-appointment-container textarea {
+    position: relative;
+    left: -35px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    
+  }
+  
+  
+.button-save:hover {
+    background-color: #1d923c;
+  }
+.button-close:hover {
+    background-color: #da1919;
+  }
+  

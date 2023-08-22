@@ -1,0 +1,91 @@
+.consultations-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.consultations-title {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.filter-section label {
+  font-size: 16px;
+  margin-right: 20px;
+}
+.filter-section select {
+  font-size: 16px;
+  margin-right: 57rem;
+}
+
+.filter-section select,
+.filter-section input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.consultations-list {
+  display: grid;
+  gap: 20px;
+}
+
+.consultation-item {
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.consultation-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.consultation-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.consultation-details p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.loading-message {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+/* Animasyonlar */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

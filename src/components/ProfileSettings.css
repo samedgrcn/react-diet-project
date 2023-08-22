@@ -1,0 +1,77 @@
+.profile-container {
+    max-width: 400px;
+    margin: 20px 50px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .form-group {
+    margin: 50px 300px;
+  }
+  
+  .form-group label {
+    font-weight: 600;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .form-input {
+    position:absolute;
+    left: 50vh;
+    margin: -3px 10px;
+    width: 100vh;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .form-group select {
+    width: 103vh;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .submit-button {
+    margin: 20px 550px;
+    padding: 20px 30px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    margin-top: 10px;
+    text-align: center;
+  }
+  

@@ -1,0 +1,55 @@
+/* UserPage.css */
+.user-page-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .user-page-form {
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 400px;
+    text-align: center;
+  }
+  
+  .user-page-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .user-page-form input {
+    display: block;
+    margin: 1rem auto;
+    padding: 0.5rem;
+    width: 100%;
+  }
+  
+  .password-container {
+    position: relative;
+  }
+  
+  .password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #007bff;
+  }
+  
+  .user-page-form button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .forgot-password {
+    color: #007bff;
+    cursor: pointer;
+  }
+  

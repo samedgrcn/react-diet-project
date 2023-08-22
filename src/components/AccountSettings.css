@@ -1,0 +1,74 @@
+.profile-container {
+    position: relative;
+  text-align: center;
+  justify-content: center;
+  top: 80px;
+  left: 500px;
+  margin-left: 50px;
+  max-width: 500px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.change-type-buttons {
+  margin-bottom: 20px;
+}
+
+.change-type-button {
+  font-size: 16px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.change-type-button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.change-email-form,
+.change-password-form {
+  display: none;
+  margin-top: 20px;
+}
+
+.change-email-form.active,
+.change-password-form.active {
+  display: block;
+}
+
+.change-email-form input,
+.change-password-form input {
+  display: block;
+  width: 52.5vh;
+  padding: 10px;
+  margin-bottom: 10px ;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.change-email-form button,
+.change-password-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}

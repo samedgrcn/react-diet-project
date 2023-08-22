@@ -1,0 +1,194 @@
+/* PatientList.css */
+.patient-list-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.input-field {
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-right: 10px;
+}
+
+.add-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+.update-button {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.update-button:hover {
+  background-color: #d39e00;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.delete-button:hover {
+  background-color: #a71d28;
+}
+
+.download-button {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.download-button:hover {
+  background-color: #1b732c;
+}
+
+.submit-button {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.submit-button:hover {
+  background-color: #1b732c;
+}
+
+.patient-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-list-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 5px 0;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.patient-list-item:hover {
+  background-color: #f0f0f0;
+}
+
+.patient-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.patient-avatar.male {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.patient-avatar.female {
+  background-color: #ff69b4;
+  color: #fff;
+}
+
+.patient-info {
+  flex: 1;
+}
+
+.patient-actions {
+  display: flex;
+}
+
+.patient-actions button {
+  margin-right: 5px;
+}
+
+.patient-details {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+}
+
+.patient-details h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.update-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.update-form input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.update-form button {
+  background-color: #ffc107;
+  color: #333;
+  align-self: flex-start;
+}
+
+.update-form button:hover {
+  background-color: #d39e00;
+}
+
+.patient-details p {
+  margin-bottom: 5px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}

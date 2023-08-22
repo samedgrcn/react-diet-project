@@ -1,0 +1,109 @@
+/* PatientFormPopup.css */
+
+.patient-form-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    max-width: 70%;
+    opacity: 0;
+    animation: popupFadeIn 0.3s ease-in-out forwards;
+  }
+  
+  @keyframes popupFadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .patient-form-popup.add {
+    max-width: 40%;
+  }
+  
+  .patient-form-popup.update {
+    max-width: 60%;
+  }
+  
+  .patient-form-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .patient-form-popup-header h3 {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .close-button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #777;
+    outline: none;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .close-button:hover {
+    color: #333;
+  }
+  
+  .patient-form-popup-content {
+    margin: 10px 0;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .input-group label {
+    flex-basis: 150px;
+    font-weight: bold;
+  }
+  
+  .input-group input,
+  .input-group select {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input-group select {
+    cursor: pointer;
+  }
+  
+  .patient-form-popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .save-button {
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .save-button:hover {
+    background-color: #0056b3;
+  }
+  

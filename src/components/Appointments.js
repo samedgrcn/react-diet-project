@@ -157,7 +157,6 @@ const handleDeleteAppointment = async (appointmentId) => {
 };
 
 
-
   return (
     <div className="appointments-container">
       

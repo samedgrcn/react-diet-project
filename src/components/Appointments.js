@@ -72,12 +72,6 @@ const Appointments = ({currentUser}) => {
   };
   
   
-<<<<<<< HEAD
-const handleUpdateAppointment = async () => {
-  try {
-    if (!selectedEvent) {
-      throw new Error("Güncellenecek etkinlik seçili değil.");
-=======
   const handleUpdateAppointment = async () => {
     try {
       if (!selectedEvent) {
@@ -90,6 +84,15 @@ const handleUpdateAppointment = async () => {
       // Firestore dokümanını alın
       const doctorSnapshot = await doctorRef.get();
       const doctorData = doctorSnapshot.data();
+  
+      // Seçili etkinlik
+      const selectedAppointmentIndex = doctorData.appointments.findIndex(
+        (event) => event.id === selectedEvent.id
+      );
+  
+      if (selectedAppointmentIndex === -1) {
+        throw new Error("Seçili etkinlik bulunamadı.");
+      }
   
       const updatedAppointments = [...doctorData.appointments];
       updatedAppointments[selectedAppointmentIndex] = {
@@ -104,6 +107,7 @@ const handleUpdateAppointment = async () => {
   
       // State'deki randevu listesini güncelleyin
       setEvents(updatedAppointments);
+      setShowAddModal(false);
   
       // Seçili randevunun detaylarını güncelleyin
       setSelectedEvent({
@@ -112,7 +116,7 @@ const handleUpdateAppointment = async () => {
         name: updatedEvent.name,
         notes: updatedEvent.notes,
       });
-      setShowAddModal(false);
+  
       // Güncelleme işlemi tamamlandığında updatedEvent'i sıfırlayın
       setUpdatedEvent({
         title: "",
@@ -121,58 +125,9 @@ const handleUpdateAppointment = async () => {
       });
     } catch (error) {
       console.error("Randevu güncelleme hatası:", error);
->>>>>>> 02d1a287ed8131a3329a8fab629e4f2baa416a4e
     }
-
-    // Firestore doküman referansını alın
-    const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
-
-    // Firestore dokümanını alın
-    const doctorSnapshot = await doctorRef.get();
-    const doctorData = doctorSnapshot.data();
-
-    // Seçili etkinlik
-    const selectedAppointmentIndex = doctorData.appointments.findIndex(
-      (event) => event.id === selectedEvent.id
-    );
-
-    if (selectedAppointmentIndex === -1) {
-      throw new Error("Seçili etkinlik bulunamadı.");
-    }
-
-    const updatedAppointments = [...doctorData.appointments];
-    updatedAppointments[selectedAppointmentIndex] = {
-      ...updatedAppointments[selectedAppointmentIndex],
-      title: updatedEvent.title,
-      name: updatedEvent.name,
-      notes: updatedEvent.notes,
-    };
-
-    // Firestore'da randevuları güncelleyin
-    await doctorRef.update({ appointments: updatedAppointments });
-
-    // State'deki randevu listesini güncelleyin
-    setEvents(updatedAppointments);
-
-    // Seçili randevunun detaylarını güncelleyin
-    setSelectedEvent({
-      ...selectedEvent,
-      title: updatedEvent.title,
-      name: updatedEvent.name,
-      notes: updatedEvent.notes,
-    });
-    setShowAddModal(false);
-
-    // Güncelleme işlemi tamamlandığında updatedEvent'i sıfırlayın
-    setUpdatedEvent({
-      title: "",
-      name: "",
-      notes: "",
-    });
-  } catch (error) {
-    console.error("Randevu güncelleme hatası:", error);
-  }
-};
+  };
+  
   
   
   

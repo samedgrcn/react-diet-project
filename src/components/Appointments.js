@@ -85,15 +85,6 @@ const Appointments = ({currentUser}) => {
       const doctorSnapshot = await doctorRef.get();
       const doctorData = doctorSnapshot.data();
   
-      // Seçili etkinlik
-      const selectedAppointmentIndex = doctorData.appointments.findIndex(
-        (event) => event.id === selectedEvent.id
-      );
-  
-      if (selectedAppointmentIndex === -1) {
-        throw new Error("Seçili etkinlik bulunamadı.");
-      }
-  
       const updatedAppointments = [...doctorData.appointments];
       updatedAppointments[selectedAppointmentIndex] = {
         ...updatedAppointments[selectedAppointmentIndex],

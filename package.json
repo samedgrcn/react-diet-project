@@ -1,14 +1,52 @@
 {
-  "name": "uygulama",
+  "name": "react-diet",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-brands-svg-icons": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@fortawesome/react-native-fontawesome": "^0.3.0",
+    "@fullcalendar/core": "^6.1.5",
+    "@fullcalendar/daygrid": "^6.1.5",
+    "@fullcalendar/react": "^6.1.5",
+    "@fullcalendar/timegrid": "^6.1.5",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
+    "@react-pdf/renderer": "^3.1.12",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.2.3",
+    "docx": "^8.2.2",
+    "file-saver": "^2.0.5",
+    "firebase": "^9.19.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.31",
+    "officegen": "^0.6.5",
+    "pdf-lib": "^1.17.1",
     "react": "^18.2.0",
+    "react-admin": "^4.9.3",
+    "react-big-calendar": "^1.6.9",
+    "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
+    "react-dropdown": "^1.11.0",
+    "react-firebase-hooks": "^5.1.1",
+    "react-hot-toast": "^2.4.0",
+    "react-icons": "^4.8.0",
+    "react-native-drop-down-item": "^1.1.0",
+    "react-native-svg": "^13.9.0",
+    "react-native-triangle": "^0.0.9",
+    "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
+    "react-searchbox-like-google": "^1.0.3",
+    "react-toastify": "^9.1.2",
+    "reactjs-popup": "^2.0.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -34,5 +72,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "source-map-loader": "^4.0.1"
   }
 }

@@ -74,53 +74,89 @@ const Appointments = ({currentUser}) => {
   
   const handleUpdateAppointment = async () => {
     try {
-      const doctorRefs = firestore.collection("doctors").doc(currentUser.uid);
-      const doctorSnapshots = await doctorRefs.get();
-      const doctorDatas = doctorSnapshots.data();
-
-      const updatedAppointmentss = [...doctorDatas.appointments];
-      await doctorRefs.update({ appointments: updatedAppointmentss });
+      if (!selectedEvent) {
+        throw new Error("Güncellenecek etkinlik seçili değil.");
+      }
   
-      // Güncellenmiş randevuları tekrar Firestore'dan alın ve ayarlayın
-      const updatedDoctorSnapshots = await doctorRefs.get();
-      const updatedDoctorDatas = updatedDoctorSnapshots.data();
-      const updatedAppointmentsFromFirestores = updatedDoctorDatas.appointments;
-      
-      setEvents(updatedAppointmentsFromFirestores);
-      setSelectedEvent(updatedEvent);
+      // Firestore doküman referansını alın
+      const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
+  
+      // Firestore dokümanını alın
+      const doctorSnapshot = await doctorRef.get();
+      const doctorData = doctorSnapshot.data();
+  
+      // Seçili etkinlik
+      const selectedAppointmentIndex = doctorData.appointments.findIndex(
+        (event) => event.id === selectedEvent.id
+      );
+  
+      if (selectedAppointmentIndex === -1) {
+        throw new Error("Seçili etkinlik bulunamadı.");
+      }
+  
+      const updatedAppointments = [...doctorData.appointments];
+      updatedAppointments[selectedAppointmentIndex] = {
+        ...updatedAppointments[selectedAppointmentIndex],
+        title: updatedEvent.title,
+        name: updatedEvent.name,
+        notes: updatedEvent.notes,
+      };
+  
+      // Firestore'da randevuları güncelleyin
+      await doctorRef.update({ appointments: updatedAppointments });
+  
+      // State'deki randevu listesini güncelleyin
+      setEvents(updatedAppointments);
+  
+      // Seçili randevunun detaylarını güncelleyin
+      setSelectedEvent({
+        ...selectedEvent,
+        title: updatedEvent.title,
+        name: updatedEvent.name,
+        notes: updatedEvent.notes,
+      });
+      setShowAddModal(false);
+      // Güncelleme işlemi tamamlandığında updatedEvent'i sıfırlayın
       setUpdatedEvent({
         title: "",
         name: "",
         notes: "",
       });
-      
     } catch (error) {
-      console.error("Error updating appointment:", error);
+      console.error("Randevu güncelleme hatası:", error);
     }
   };
   
-  const handleDeleteAppointment = async (appointmentId) => {
-    try {
-      const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
-      const doctorSnapshot = await doctorRef.get();
-      const doctorData = doctorSnapshot.data();
   
-      const updatedAppointments = doctorData.appointments.filter(
-        (event) => event.id !== appointmentId
-      );
   
-      await doctorRef.update({ appointments: updatedAppointments });
-  
-      setEvents((prevEvents) =>
-        prevEvents.map((event) =>
-          event.id === appointmentId ? null : event
-        )
-      );
-      setSelectedEvent(null); // Eğer silinen event seçiliyse, seçili eventi temizle
-    } catch (error) {
-      console.error("Error deleting appointment:", error);
-    }
-  };
+const handleDeleteAppointment = async (appointmentId) => {
+  try {
+    const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
+
+    // Firestore dokümanını alın
+    const doctorSnapshot = await doctorRef.get();
+    const doctorData = doctorSnapshot.data();
+
+    // Sadece seçili eventi bulup sil
+    const updatedAppointments = doctorData.appointments.filter(
+      (event) => event.id !== appointmentId
+    );
+
+    await doctorRef.update({ appointments: updatedAppointments });
+
+    // Seçili eventi state'den ve takvimden sil
+    setEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event.id === appointmentId ? null : event
+      )
+    );
+    setSelectedEvent(null); // Eğer silinen event seçiliyse, seçili eventi temizle
+  } catch (error) {
+    console.error("Error deleting appointment:", error);
+  }
+};
+
+
   
   
   

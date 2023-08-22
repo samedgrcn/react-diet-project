@@ -34,6 +34,8 @@
     "react-admin": "^4.9.3",
     "react-big-calendar": "^1.6.9",
     "react-bootstrap": "^2.7.4",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-dropdown": "^1.11.0",
     "react-firebase-hooks": "^5.1.1",

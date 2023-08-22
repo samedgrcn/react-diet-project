@@ -30,15 +30,7 @@
 .close-details {
   position: absolute;
   bottom: -30px;
-  left: 49.4rem;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  left: 58.4rem;
   font-size: 24px;
   cursor: pointer;
 }

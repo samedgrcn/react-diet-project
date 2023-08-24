@@ -49,19 +49,22 @@ const PatientList = ({currentUser}) => {
     const fetchPatients = async () => {
       try {
         const docRef = firestore.collection("doctors").doc(currentUser.uid);
-const snapshot = await docRef.collection("patients").get();
-        const fetchedPatients = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setPatients(fetchedPatients);
+        const snapshot = await docRef.get();
+        
+        if (snapshot.exists) {
+          const fetchedPatients = snapshot.data().patients || [];
+          setPatients(fetchedPatients);
+        } else {
+          console.log("No patients found for the current user.");
+        }
       } catch (error) {
         console.error("Error fetching patients:", error);
       }
     };
-
+  
     fetchPatients();
   }, [currentUser]);
+  
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -154,7 +157,7 @@ const snapshot = await docRef.collection("patients").get();
 
   const handleAddPatientSubmit = async (newPatientData) => {
     try {
-      const docRef = firestore.collection("doctors").doc(currentUser.uid).collection("patients").doc();
+      const docRef = firestore.collection("doctors").doc(currentUser.uid);
       const patientId = docRef.id;
   
       // Ekleme işlemi yapmadan önce mevcut hastaları al

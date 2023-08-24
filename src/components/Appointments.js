@@ -129,32 +129,56 @@ const Appointments = ({currentUser}) => {
   };
   
   
-const handleDeleteAppointment = async (appointmentId) => {
-  try {
-    const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
+  const handleDeleteAppointment = async () => {
+    try {
+      if (!selectedEvent) {
+        throw new Error("Silinecek etkinlik seçili değil.");
+      }
+  
+      const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
+  
+      // Firestore dokümanını alın
+      const doctorSnapshot = await doctorRef.get();
+      const doctorData = doctorSnapshot.data();
 
-    // Firestore dokümanını alın
-    const doctorSnapshot = await doctorRef.get();
-    const doctorData = doctorSnapshot.data();
+      console.log("selectedEvent.id:", selectedEvent.id);
+      console.log("doctorData.appointments:", doctorData.appointments);
+  
+      // Seçili etkinliğin ID'sini al
+      const selectedAppointmentId = selectedEvent.id;
+  
+      // Seçili etkinliğin index numarasını bul
+      const selectedAppointmentIndex = doctorData.appointments.findIndex(
+        (event) =>{
+          console.log("event.id:", event.id);
+          return event.id === selectedAppointmentId;
+        }
+      );
 
-    // Sadece seçili eventi bulup sil
-    const updatedAppointments = doctorData.appointments.filter(
-      (event) => event.id !== appointmentId
-    );
-
-    await doctorRef.update({ appointments: updatedAppointments });
-
-    // Seçili eventi state'den ve takvimden sil
-    setEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event.id === appointmentId ? null : event
-      )
-    );
-    setSelectedEvent(null); // Eğer silinen event seçiliyse, seçili eventi temizle
-  } catch (error) {
-    console.error("Error deleting appointment:", error);
-  }
-};
+      console.log("selectedAppointmentIndex:", selectedAppointmentIndex);
+  
+      if (selectedAppointmentIndex === -1) {
+        throw new Error("Seçili etkinlik bulunamadı.");
+      }
+  
+      // Seçili etkinliği sil
+      const updatedAppointments = [
+        ...doctorData.appointments.slice(0, selectedAppointmentIndex),
+        ...doctorData.appointments.slice(selectedAppointmentIndex + 1)
+      ];
+  
+      await doctorRef.update({ appointments: updatedAppointments });
+  
+      // Seçili eventi state'den ve takvimden sil
+      setEvents(updatedAppointments);
+      setSelectedEvent(null); // Eğer silinen event seçiliyse, seçili eventi temizle
+    } catch (error) {
+      console.error("Error deleting appointment:", error);
+    }
+  };
+  
+  
+  
 
   return (
     <div className="appointments-container">

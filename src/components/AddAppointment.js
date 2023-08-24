@@ -7,6 +7,18 @@ const AddAppointment = ({ onClose, onAppointmentAdded, selectedDay }) => {
   const [title, setTitle] = useState("");
   const [notes, setNotes] = useState("");
 
+  function generateUniqueId() {
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const length = 10; // Dizedeki karakter sayısı
+    let id = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      id += chars[randomIndex];
+    }
+    return id;
+  }
+  
+
   const handleSaveAppointment = () => {
     if (title.trim() === "") {
       alert("Randevu başlığı boş olamaz.");
@@ -19,6 +31,7 @@ const AddAppointment = ({ onClose, onAppointmentAdded, selectedDay }) => {
     }
 
     const newAppointment = {
+      id: generateUniqueId(),
       start: selectedDay,
       end: selectedDay,
       title: title,

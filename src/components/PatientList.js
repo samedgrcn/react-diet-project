@@ -141,8 +141,6 @@ const PatientList = ({currentUser}) => {
     }
   };
   
-  
-  
 
   const handleAddPatient = () => {
     setSelectedPatient({});
@@ -261,7 +259,6 @@ const PatientList = ({currentUser}) => {
             <div className="patient-info">
               <h2>{selectedPatient.name}</h2>
               <p>TC Numarası: {selectedPatient.tcNumber}</p>
-              {/* Diğer bilgileri de burada gösterin */}
               <p>Telefon: {selectedPatient.phoneNumber}</p>
               <p>Eposta: {selectedPatient.email}</p>
               <p>Doğum Günü: {selectedPatient.birthDate}</p>

@@ -1,45 +1,59 @@
 import React, { useState, useEffect } from "react";
 import "./Consultations.css";
-import firebase from "../db/firebase";
+import { firestore } from "../db/firebase";
 
 const Consultations = ({ currentUser }) => {
   const [consultations, setConsultations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("name"); // Default sıralama: İsme göre
   const [filterBy, setFilterBy] = useState(""); // Filtreleme
-
+  
   useEffect(() => {
     const fetchConsultations = async () => {
       try {
-        const snapshot = await firebase.firestore().collection("doctors").doc(currentUser.id).collection("appointments").get();
+        const docRef = firestore.collection("doctors").doc(currentUser.uid);
+        const docSnapshot = await docRef.get();
+        const doctorData = docSnapshot.data();
 
-        const consultationsData = snapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            patientName: data.name, // Randevu sayfasındaki "name" alanı
-            date: data.start.toDate(), // Firebase'den alınan tarihi uygun formata çevirme
-            notes: data.notes,
-          };
-        });
+        
+        if (!doctorData || !doctorData.appointments) {
+          console.log("Veriler boş veya appointments eksik");
+          setConsultations([]);
+          setLoading(false);
+          return;
+        }
+        console.log("Appointments uzunluğu:", doctorData.appointments.length);
 
-        // İsme göre sıralama
+     
+        
+        const appointments = doctorData.appointments;
+        
+        const consultationsData = appointments.map((appointment) => ({
+          id: appointment.id,
+          patientName: appointment.name || "Bilgi yok",
+          date: appointment.start ? appointment.start.toDate() : new Date(),
+          notes: appointment.notes || "Açıklama yok",
+        }));
+
+        
+
+        // Sıralama ve filtreleme işlemleri burada yapılır
+        let sortedAndFilteredConsultations = [...consultationsData];
         if (sortBy === "name") {
-          consultationsData.sort((a, b) =>
+          sortedAndFilteredConsultations.sort((a, b) =>
             a.patientName.localeCompare(b.patientName)
           );
+        } else if (sortBy === "date") {
+          sortedAndFilteredConsultations.sort((a, b) => a.date - b.date);
         }
-        // Tarihe göre sıralama
-        else if (sortBy === "date") {
-          consultationsData.sort((a, b) => a.date - b.date);
+        if (filterBy) {
+          sortedAndFilteredConsultations = sortedAndFilteredConsultations.filter(
+            (consultation) =>
+              consultation.patientName.toLowerCase().includes(filterBy.toLowerCase())
+          );
         }
-
-        // Filtreleme
-        const filteredConsultations = consultationsData.filter((consultation) =>
-          consultation.patientName.toLowerCase().includes(filterBy.toLowerCase())
-        );
-
-        setConsultations(filteredConsultations);
+        console.log('Sıralama ve filtreleme sonrası randevular:', sortedAndFilteredConsultations);
+        setConsultations(sortedAndFilteredConsultations);
         setLoading(false);
       } catch (error) {
         console.error("Görüşmeler alınırken hata oluştu:", error);
@@ -48,6 +62,9 @@ const Consultations = ({ currentUser }) => {
 
     fetchConsultations();
   }, [currentUser, sortBy, filterBy]);
+  
+  
+  
 
   if (loading) {
     return (

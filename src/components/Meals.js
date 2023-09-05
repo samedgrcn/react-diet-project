@@ -127,7 +127,10 @@ const Meals = ({ currentUser }) => {
 
             <span className="select-list">Seçili Liste: {selectedMeal.name}</span>
             <button onClick={handleUpdateMeal}>Güncelle</button>
-            <button onClick={() => setSelectedMeal(null)}>İptal</button>
+            <button onClick={() => {
+              setSelectedMeal(null);
+              setMealName("");
+            }}>İptal</button>
           </div>
         ) : (
           <div className="add-form">

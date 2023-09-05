@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./DoctorDashboard.css";
-import firebase from "../db/firebase";
+import { firestore } from "../db/firebase";
 
 const DoctorDashboard = ({ currentUser }) => {
   const [dashboardData, setDashboardData] = useState({
@@ -19,27 +19,28 @@ const DoctorDashboard = ({ currentUser }) => {
 
     const fetchDoctorData = async () => {
       try {
-        const doctorRef = firebase.firestore().collection("doctors").doc(currentUser.uid);
+        const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
         const doctorData = await doctorRef.get();
 
         if (doctorData.exists) {
-          
+          // Doctors koleksiyonu içerisindeki appointments, patients, meals, meetings dizilerini al
+          const { appointments, patients, meals } = doctorData.data();
 
-          const patientsSnapshot = await firebase.firestore().collection("doctors").doc(currentUser.id).collection("patients").get();
-          const totalPatients = patientsSnapshot.size;
+          const totalPatients = patients.length;
+          const today = new Date();
 
-          const appointmentsSnapshot = await firebase.firestore().collection("doctors").doc(currentUser.id).collection("appointments").get();
-          const totalAppointments = appointmentsSnapshot.docs.filter((doc) =>
-            isToday(doc.data().start.toDate())
-          ).length;
+          // Randevuları bugünkü tarih ile filtreleyin
+          const totalAppointments = appointments.filter((appointment) => {
+            const appointmentDate = appointment.start.toDate();
+            return (
+              appointmentDate.getDate() === today.getDate() &&
+              appointmentDate.getMonth() === today.getMonth() &&
+              appointmentDate.getFullYear() === today.getFullYear()
+            );
+          }).length;
 
-          // Yemek sayısını direkt olarak yüklenmiş yemeklerin toplam sayısı olarak al
-          const mealsSnapshot = await firebase.firestore().collection("doctors").doc(currentUser.id).collection("meals").get();
-          const totalMeals = mealsSnapshot.size;
-
-          
-          const meetingsSnapshot = await firebase.firestore().collection("doctors").doc(currentUser.id).collection("appointments").get();
-          const totalMeetings = meetingsSnapshot.size;
+          const totalMeals = meals.length;
+          const totalMeetings = appointments.length;
 
           setDashboardData({
             totalPatients,
@@ -58,16 +59,6 @@ const DoctorDashboard = ({ currentUser }) => {
     fetchDoctorData();
   }, [currentUser]);
 
-  const isToday = (date) => {
-    const today = new Date();
-    const targetDate = date;
-
-    return (
-      today.getDate() === targetDate.getDate() &&
-      today.getMonth() === targetDate.getMonth() &&
-      today.getFullYear() === targetDate.getFullYear()
-    );
-  };
 
   return (
     <div className="doctor-dashboard-container">

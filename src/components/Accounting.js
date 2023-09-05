@@ -11,19 +11,19 @@ const Accounting = ({ currentUser }) => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const snapshot = await firebase.firestore().collection("patients").get();
-        const patientsData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setPatients(patientsData);
+        const snapshot = await firebase.firestore().collection("doctors").doc(currentUser.id).get();
+        const doctorData = snapshot.data();
+
+        if (doctorData && doctorData.patients) {
+          setPatients(doctorData.patients);
+        }
       } catch (error) {
         console.error("Hastalar alınırken hata oluştu:", error);
       }
     };
 
     fetchPatients();
-  }, []);
+  }, [currentUser]);
 
   const handleSaveReceipt = async () => {
     if (!selectedPatient || !receiptPdf) {
@@ -36,8 +36,18 @@ const Accounting = ({ currentUser }) => {
       const fileRef = storageRef.child(`receipts/${receiptPdf.name}`);
       await fileRef.put(receiptPdf);
 
-      await firebase.firestore().collection("patients").doc(selectedPatient.id).update({
-        receiptUrl: await fileRef.getDownloadURL(),
+      const updatedPatients = await Promise.all(
+        patients.map(async (patient) => {
+          if (patient.id === selectedPatient.id) {
+            const receiptUrl = await fileRef.getDownloadURL();
+            return { ...patient, receiptUrl };
+          }
+          return patient;
+        })
+      );
+
+      await firebase.firestore().collection("doctors").doc(currentUser.id).update({
+        patients: updatedPatients,
       });
 
       alert("Dekont başarıyla kaydedildi.");

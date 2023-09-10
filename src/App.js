@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
-import firebaseConfig from './db/firebase'
-
+import firebaseConfig, { auth } from './db/firebase'
+import { onAuthStateChanged } from "firebase/auth";
 
 import Navbar from "./components/Navbar";
 import AdminDashboard from "./components/AdminDashboard";
@@ -31,13 +31,17 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    // Firebase Auth'ta oturum durumunu dinle
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      setCurrentUser(user);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+       setCurrentUser(user) // Kullanıcı oturumu açtıysa yapılacak işlemler
+      } else {
+        setCurrentUser("")// Kullanıcı oturumu kapattıysa yapılacak işlemler
+      }
     });
-
-    // Component unmount olduğunda dinlemeyi kapat
-    return () => unsubscribe();
+  
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const handleLogout = async () => {
@@ -63,31 +67,31 @@ const App = () => {
 
           <Route exact path="/" element={<UserPage/>}/>  
           
-          <Route exact path="/admin-dashboard" element={currentUser ? <AdminDashboard currentUser={currentUser} /> : <Navigate to="/" />} />
+          <Route exact path="/admin-dashboard" element={<AdminDashboard currentUser={currentUser} />} />
            
           
           <Route exact path="/doctor-dashboard" element={<DoctorDashboard currentUser={currentUser} />}/>
             
           
-          <Route exact path="/appointments" element= {currentUser ? <Appointments currentUser={currentUser} /> : <Navigate to="/" />}/>
+          <Route exact path="/appointments" element= {<Appointments currentUser={currentUser} />}/>
            
           
-          <Route exact path="/meals" element={currentUser ? <Meals currentUser={currentUser} /> : <Navigate to="/" />}/>
+          <Route exact path="/meals" element={<Meals currentUser={currentUser} />}/>
             
           
-          <Route exact path="/consultations" element={currentUser ? <Consultations currentUser={currentUser} /> : <Navigate to="/" />}/>
+          <Route exact path="/consultations" element={<Consultations currentUser={currentUser} />}/>
             
           
-          <Route exact path="/accounting" element={currentUser ? <Accounting currentUser={currentUser} /> : <Navigate to="/" />}/>
+          <Route exact path="/accounting" element={<Accounting currentUser={currentUser} />}/>
             
           
-          <Route exact path="/clients" element={currentUser ? <Clients currentUser={currentUser} /> : <Navigate to="/" />}/>
+          <Route exact path="/clients" element={ <Clients currentUser={currentUser} />}/>
           
           
-          <Route exact path="/account-settings" element={currentUser ? <AccountSettings currentUser={currentUser} /> : <Navigate to="/" />}/>
+          <Route exact path="/account-settings" element={<AccountSettings currentUser={currentUser} />}/>
           
           
-          <Route exact path="/profile" element={currentUser ? <ProfileSettings currentUser={currentUser} /> : <Navigate to="/" />}/>
+          <Route exact path="/profile" element={<ProfileSettings currentUser={currentUser} />}/>
         </Routes>
       </div>
     </Router>

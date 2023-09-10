@@ -22,6 +22,10 @@
 .search-bar {
   display: flex;
   align-items: center;
+  margin-right: 40px;
+}
+.search-bar button{
+  margin-left: 8rem;
 }
 
 .input-field {
@@ -151,27 +155,33 @@
   font-size: 20px;
 }
 
-.update-form {
+.update-forms {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
 }
 
-.update-form input {
+.update-forms input {
   margin-bottom: 10px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
+  width: 393px;
 }
 
-.update-form button {
+.update-forms select{
+  width: 410px;
+}
+
+.update-forms button {
+  margin-top: 6px;
   background-color: #ffc107;
   color: #333;
   align-self: flex-start;
 }
 
-.update-form button:hover {
+.update-forms button:hover {
   background-color: #d39e00;
 }
 

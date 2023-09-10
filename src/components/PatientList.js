@@ -1,29 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../db/firebase";
-//import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import PatientFormPopup from "./PatientFormPopup";
+import PDFButton from "./PDFButton";
 import "./PatientList.css";
-
-// const pdfStyles = StyleSheet.create({
-//   page: {
-//     flexDirection: "column",
-//     backgroundColor: "#FFFFFF",
-//     padding: 20,
-//   },
-  // ... diğer stiller
-//});
-
-// const generatePDF = (patient) => (
-//   <Document>
-//     <Page size="A4" style={pdfStyles.page}>
-//       <View>
-//         <Text>{`Hasta Adı: ${patient.name}`}</Text>
-//         <Text>{`TC Numarası: ${patient.tcNumber}`}</Text>
-//         {/* Diğer bilgileri de benzer şekilde ekleyin */}
-//       </View>
-//     </Page>
-//   </Document>
-// );
 
 const PatientList = ({currentUser}) => {
   const [patients, setPatients] = useState([]);
@@ -79,15 +58,16 @@ const PatientList = ({currentUser}) => {
   const handlePatientClick = (patient) => {
     if (selectedPatient && selectedPatient.id === patient.id) {
       setSelectedPatient(null);
-      setIsUpdating(false);
+      setIsUpdating(false); // Hasta bilgilerini sadece görüntüleme moduna geçir
     } else {
       setSelectedPatient(patient);
-      setIsUpdating(true);
+       // Yeni bir hastaya tıkladığınızda, önce sadece görüntüleme moduna geçirin
       setUpdatedPatientData(patient);
     }
   };
 
-  const handleUpdatePatient = async () => {
+  const handleUpdatePatient = async (event) => {
+    event.stopPropagation();
     try {
       const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
       const doctorSnapshot = await doctorRef.get();
@@ -124,7 +104,8 @@ const PatientList = ({currentUser}) => {
     }
   };
   
-  const handleDeletePatient = async (patientId) => {
+  const handleDeletePatient = async (event, patient, patientId) => {
+    event.stopPropagation();
     try {
       const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
       const doctorSnapshot = await doctorRef.get();
@@ -143,7 +124,7 @@ const PatientList = ({currentUser}) => {
   
 
   const handleAddPatient = () => {
-    setSelectedPatient({});
+    setSelectedPatient(null);
     setIsUpdating(false);
     setShowPopup(true);
   };
@@ -170,37 +151,13 @@ const PatientList = ({currentUser}) => {
   
       const newPatient = { id: patientId, ...newPatientData };
       setPatients((prevPatients) => [...prevPatients, newPatient]);
-  
+      
       setSelectedPatient(null);
       setShowPopup(false);
     } catch (error) {
       console.error("Error adding patient:", error);
     }
   };
-  
-  
-
-  
-
-  // const handleDownloadPDF = async (patient) => {
-  //   try {
-  //     const pdfBlob = generatePDF(patient);
-  //     const url = URL.createObjectURL(pdfBlob);
-
-  //     const a = document.createElement("a");
-  //     a.href = url;
-  //     a.download = `${patient.name}_detay.pdf`;
-
-  //     a.click();
-
-  //     setTimeout(() => {
-  //       URL.revokeObjectURL(url);
-  //     }, 1000);
-  //   } catch (error) {
-  //     console.error("Error generating or downloading PDF:", error);
-  //   }
-  // };
-
   
 
   return (
@@ -215,33 +172,35 @@ const PatientList = ({currentUser}) => {
         <button onClick={handleAddPatient}>Ekle</button>
       </div>
       <div className="patient-list">
-        {filteredPatients.map((patient) => (
-          <div
-            key={patient.id}
-            className={`patient-list-item ${selectedPatient?.id === patient.id ? "selected" : ""}`}
-            onClick={() => handlePatientClick(patient)}
-          >
-            <div className={`patient-avatar ${patient.gender === "male" ? "male" : "female"}`}>
-              {patient.gender === "male" ? "Bay" : "Bayan"}
-            </div>
-            <div className="patient-info">
-              <span className="patient-name">{patient.name}</span>
-              <span className="patient-tc">{patient.tcNumber}</span>
-            </div>
-            {selectedPatient?.id === patient.id && (
-              <div className="patient-actions">
-                <button onClick={() => setIsUpdating(true)}>Düzenle</button>
-                <button onClick={() => handleDeletePatient(selectedPatient.id)}>Sil</button>
-                {/*<button onClick={() => handleDownloadPDF(patient)}>PDF olarak indir</button>*/}
-              </div>
-            )}
-          </div>
-        ))}
+      {filteredPatients.map((patient) => (
+  <div
+    key={patient.id}
+    className={`patient-list-item ${selectedPatient?.id === patient.id ? "selected" : ""}`}
+    onClick={() => handlePatientClick(patient)}
+  >
+    <div className={`patient-avatar ${patient.gender === "male" ? "male" : "female"}`}>
+      {patient.gender === "male" ? "Bay" : "Bayan"}
+    </div>
+    <div className="patient-info">
+      <span className="patient-name">{patient.name}</span>
+      <span className="patient-tc">{patient.tcNumber}</span>
+    </div>
+    
+      <div className="patient-actions">
+        <button onClick={() => setIsUpdating(true)}>Düzenle</button>
+        <button onClick={() => handleDeletePatient(selectedPatient.id)}>Sil</button>
+        <PDFButton patient={patient} />
+      </div>
+      
+    
+  </div>
+))}
+
       </div>
       {selectedPatient && (
         <div className="patient-details">
           {isUpdating ? (
-            <div className="update-form">
+            <div className="update-forms">
               <input
                 type="text"
                 value={updatedPatientData.name}
@@ -252,7 +211,47 @@ const PatientList = ({currentUser}) => {
                 value={updatedPatientData.tcNumber}
                 onChange={(e) => setUpdatedPatientData({ ...updatedPatientData, tcNumber: e.target.value })}
               />
-              {/* Diğer bilgileri de burada düzenlenebilir inputlar şeklinde ekleyin */}
+              <input
+                type="text"
+                value={updatedPatientData.phoneNumber}
+                onChange={(e) => setUpdatedPatientData({ ...updatedPatientData, phoneNumber: e.target.value })}
+              />
+              <input
+                type="text"
+                value={updatedPatientData.email}
+                onChange={(e) => setUpdatedPatientData({ ...updatedPatientData, email: e.target.value })}
+              />
+              <input
+                type="text"
+                value={updatedPatientData.birthDate}
+                onChange={(e) => setUpdatedPatientData({ ...updatedPatientData, birthDate: e.target.value })}
+              />
+              <input
+                type="text"
+                value={updatedPatientData.height}
+                onChange={(e) => setUpdatedPatientData({ ...updatedPatientData, height: e.target.value })}
+              />
+              <input
+                type="text"
+                value={updatedPatientData.weight}
+                onChange={(e) => setUpdatedPatientData({ ...updatedPatientData, weight: e.target.value })}
+              />
+              <input
+                type="text"
+                value={updatedPatientData.bodyFatPercentage}
+                onChange={(e) => setUpdatedPatientData({ ...updatedPatientData, bodyFatPercentage: e.target.value })}
+              />
+              <input
+                type="text"
+                value={updatedPatientData.bmi}
+                onChange={(e) => setUpdatedPatientData({ ...updatedPatientData, bmi: e.target.value })}
+              />
+              <select name="gender" value={updatedPatientData.gender} onChange={(e) => 
+                setUpdatedPatientData({ ...updatedPatientData, gender: e.target.value })}>
+                <option value="male">Erkek</option>
+                <option value="female">Kadın</option>
+              </select>
+
               <button onClick={handleUpdatePatient}>Güncelle</button>
             </div>
           ) : (

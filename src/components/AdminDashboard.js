@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
 import firebase from "../db/firebase";
 
-const AdminDashboard = ({ currentUser }) => {
+const AdminDashboard = () => {
   const [newDoctorEmail, setNewDoctorEmail] = useState("");
   const [newDoctorPassword, setNewDoctorPassword] = useState("");
   const [newDoctorName, setNewDoctorName] = useState("");

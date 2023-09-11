@@ -55,7 +55,7 @@ const ProfileEditPage = () => {
           <label>Ad:</label>
           <input
             type="text"
-            className="form-input"
+            className="edit-input"
             value={doctorInfo.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
           />
@@ -64,7 +64,7 @@ const ProfileEditPage = () => {
           <label>Yaş:</label>
           <input
             type="text"
-            className="form-input"
+            className="edit-input"
             value={doctorInfo.age}
             onChange={(e) => handleInputChange("age", e.target.value)}
           />
@@ -72,10 +72,11 @@ const ProfileEditPage = () => {
         <div className="form-group">
           <label>Cinsiyet:</label>
           <select
-            className="form-input"
+            className="edit-input"
             value={doctorInfo.gender}
             onChange={(e) => handleInputChange("gender", e.target.value)}
             >
+            <option value="cinsiyet seçiniz">Cinsiyetinizi Seçiniz...</option>
             <option value="erkek">Erkek</option>
             <option value="kadın">Kadın</option>
         </select>
@@ -84,7 +85,7 @@ const ProfileEditPage = () => {
           <label>Okul:</label>
           <input
             type="text"
-            className="form-input"
+            className="edit-input"
             value={doctorInfo.school}
             onChange={(e) => handleInputChange("school", e.target.value)}
           />

@@ -3,7 +3,7 @@
   text-align: center;
   justify-content: center;
   top: 80px;
-  left: 500px;
+  left: 400px;
   margin-left: 50px;
   max-width: 500px;
   padding: 20px;
@@ -51,9 +51,9 @@
 .change-email-form input,
 .change-password-form input {
   display: block;
+  margin: 10px 90px;
   width: 52.5vh;
   padding: 10px;
-  margin-bottom: 10px ;
   border: 1px solid #ccc;
   border-radius: 5px;
 }

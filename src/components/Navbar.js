@@ -26,57 +26,53 @@ const Navbar = ({ currentUser, handleLogout }) => {
       </div>
       
       <ul className="navbar-menu">
-        {currentUser ? (
-          <>
-            <li className="navbar-item">
-              <Link to="/doctor-dashboard" className="navbar-link">
-                Ana Sayfa
-              </Link>
-            </li>
-            <li className="navbar-item">
-              <Link to="/appointments" className="navbar-link">
-                Randevular
-              </Link>
-            </li>
-            <li className="navbar-item">
-              <Link to="/meals" className="navbar-link">
-                Yemekler
-              </Link>
-            </li>
-            <li className="navbar-item">
-              <Link to="/consultations" className="navbar-link">
-                Görüşmeler
-              </Link>
-            </li>
-            <li className="navbar-item">
-              <Link to="/clients" className="navbar-link">
-                Danışanlar
-              </Link>
-            </li>
-            {currentUser.email === "sam@gmail.com" && (
-              <li className="navbar-item">
-                <Link to="/admin-dashboard" className="navbar-link">
-                  Yönetim Paneli
-                </Link>
-              </li>
-            )}
-            {currentUser.email.startsWith("doctor") && (
-              <li className="navbar-item">
-                <Link to="/doctor-dashboard" className="navbar-link">
-                  Doktor Paneli
-                </Link>
-              </li>
-              
-            )}
-            <span className="navbar-item">{currentUser?.email}</span>
-          </>
-        ) : (
-          <li className="navbar-item">
-            <Link to="/" className="navbar-link">
-              Giriş Yap
-            </Link>
-          </li>
-        )}
+      {currentUser ? (
+  <>
+    {currentUser.email === "sam@gmail.com" ? (
+      <li className="navbar-item">
+        <Link to="/admin-dashboard" className="navbar-link">
+          Yönetim Paneli
+        </Link>
+      </li>
+    ) : (
+      <>
+        <li className="navbar-item">
+          <Link to="/doctor-dashboard" className="navbar-link">
+            Ana Sayfa
+          </Link>
+        </li>
+        <li className="navbar-item">
+          <Link to="/appointments" className="navbar-link">
+            Randevular
+          </Link>
+        </li>
+        <li className="navbar-item">
+          <Link to="/meals" className="navbar-link">
+            Yemekler
+          </Link>
+        </li>
+        <li className="navbar-item">
+          <Link to="/consultations" className="navbar-link">
+            Görüşmeler
+          </Link>
+        </li>
+        <li className="navbar-item">
+          <Link to="/clients" className="navbar-link">
+            Danışanlar
+          </Link>
+        </li>
+      </>
+    )}
+    <span className="navbar-item">{currentUser?.email}</span>
+  </>
+) : (
+  <li className="navbar-item">
+    <Link to="/" className="navbar-link">
+      Giriş Yap
+    </Link>
+  </li>
+)}
+
       </ul>
       
       <div className="navbar-user" onClick={toggleDropdown}>
@@ -92,7 +88,7 @@ const Navbar = ({ currentUser, handleLogout }) => {
           <ul className="dropdown-menu">
             <li className="dropdown-item">
               <Link to="/profile" className="dropdown-link">
-                Profil Düzenle
+                Profili Düzenle
               </Link>
             </li>
             <li className="dropdown-item">

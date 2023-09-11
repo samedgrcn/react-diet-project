@@ -1,5 +1,5 @@
 .profile-container {
-    max-width: 400px;
+    max-width: 600px;
     margin: 20px 50px;
     padding: 20px;
     border: 1px solid #ccc;
@@ -25,11 +25,11 @@
     color: #555;
   }
   
-  .form-input {
+  .edit-input {
     position:absolute;
     left: 50vh;
-    margin: -3px 10px;
-    width: 100vh;
+    margin: -30px 25px;
+    width: 40rem;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -38,7 +38,7 @@
   }
   
   .form-group select {
-    width: 103vh;
+    width: 41.3rem;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;

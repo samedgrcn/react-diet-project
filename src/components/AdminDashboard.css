@@ -82,6 +82,12 @@
 /* Form stilleri */
 .add-doctor {
   margin-bottom: 20px;
+  width: 97%;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333333;
 }
 
 label {
@@ -90,19 +96,6 @@ label {
   margin-bottom: 5px;
   color: #333333;
   font-size: 16px;
-}
-
-input[type="email"],
-input[type="password"],
-input[type="text"],
-input[type="number"],
-select {
-  width: 97%;
-  padding: 10px;
-  border: 1px solid #cccccc;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #333333;
 }
 
 select {

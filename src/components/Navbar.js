@@ -72,7 +72,6 @@ const Navbar = ({ currentUser, handleLogout }) => {
     </Link>
   </li>
 )}
-
       </ul>
       
       <div className="navbar-user" onClick={toggleDropdown}>
@@ -86,11 +85,9 @@ const Navbar = ({ currentUser, handleLogout }) => {
        
         {showDropdown && (
           <ul className="dropdown-menu">
-            <li className="dropdown-item">
-              <Link to="/profile" className="dropdown-link">
-                Profili Düzenle
-              </Link>
-            </li>
+
+          {currentUser.email === "sam@gmail.com" ? (
+          <>
             <li className="dropdown-item">
               <Link to="/account-settings" className="dropdown-link">
                 Hesap Ayarları
@@ -105,7 +102,32 @@ const Navbar = ({ currentUser, handleLogout }) => {
               <Link to="/" onClick={handleLogout} className="dropdown-link">
                 Çıkış Yap
               </Link>
+            </li>  
+          </>
+          ): ( currentUser?.email && (
+            <>
+          <li className="dropdown-item">
+            <Link to="/profile" className="dropdown-link">
+              Profili Düzenle
+            </Link>
+          </li>
+          <li className="dropdown-item">
+              <Link to="/account-settings" className="dropdown-link">
+                Hesap Ayarları
+              </Link>
             </li>
+            <li className="dropdown-item">
+              <Link onClick={toggleDarkMode} className="dropdown-link ">
+                {darkMode ? "Gündüz Modu" : "Karanlık Mod"}
+              </Link>
+            </li>
+            <li className="dropdown-item">
+              <Link to="/" onClick={handleLogout} className="dropdown-link">
+                Çıkış Yap
+              </Link>
+            </li>
+            </>
+          ))}
           </ul>
         )}
       </div>

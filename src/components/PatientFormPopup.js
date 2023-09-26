@@ -18,7 +18,7 @@ const PatientFormPopup = ({ patientData, setPatientData, onClose, onSubmit }) =>
   return (
     <div className={`patient-form-popup ${patientData.id ? "update" : "add"}`}>
       <div className="patient-form-popup-header">
-        <h3>{patientData.id ? "Hasta Bilgilerini Güncelle" : "Yeni Hasta Ekle"}</h3>
+        <h3>{"Yeni Hasta Ekle"}</h3>
         <button className="close-button" onClick={onClose}>
           X
         </button>

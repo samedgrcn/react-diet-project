@@ -9,7 +9,7 @@
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    max-width: 70%;
+    
     opacity: 0;
     animation: popupFadeIn 0.3s ease-in-out forwards;
   }
@@ -24,11 +24,11 @@
   }
   
   .patient-form-popup.add {
-    max-width: 40%;
+    max-width: 70vh;
   }
   
   .patient-form-popup.update {
-    max-width: 60%;
+    max-width: 70vh;
   }
   
   .patient-form-popup-header {
@@ -82,6 +82,7 @@
   }
   
   .input-group select {
+    width: 133px;
     cursor: pointer;
   }
   

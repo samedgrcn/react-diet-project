@@ -23,6 +23,7 @@ const PatientList = ({currentUser}) => {
     targetWeight: "",
   });
   const [showPopup, setShowPopup] = useState(false);
+  
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -36,6 +37,7 @@ const PatientList = ({currentUser}) => {
         } else {
           console.log("No patients found for the current user.");
         }
+
       } catch (error) {
         console.error("Error fetching patients:", error);
       }
@@ -69,38 +71,63 @@ const PatientList = ({currentUser}) => {
   const handleUpdatePatient = async (event) => {
     event.stopPropagation();
     try {
-      const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
-      const doctorSnapshot = await doctorRef.get();
-      const doctorData = doctorSnapshot.data();
-  
       if (!selectedPatient) {
         return;
       }
+
+      // Firestore doküman referansını alın
+      const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
   
-      const updatedPatients = doctorData.patients.map((patient) =>
-        patient.id === selectedPatient.id ? { ...patient, ...updatedPatientData } : patient
-      );
+      // Firestore dokümanını alın
+      const doctorSnapshot = await doctorRef.get();
+      const doctorData = doctorSnapshot.data();
   
-      await doctorRef.update({ patients: updatedPatients });
+      // Seçili hastanın dizideki indexini bulun
+      const selectedIndex = doctorData.patients.findIndex(
+        (patient) => patient.id === selectedPatient.id);
   
-      setPatients(updatedPatients);
-      setIsUpdating(false);
-      setSelectedPatient(null);
-      setUpdatedPatientData({
-        name: "",
-        tcNumber: "",
-        phoneNumber: "",
-        email: "",
-        birthDate: "",
-        height: "",
-        weight: "",
-        bodyFatPercentage: "",
-        bmi: "",
-        gender: "",
-        targetWeight: "",
-      });
+      if (selectedIndex === -1) {
+
+        throw new Error("Seçili hasta bulunamadı.");
+      }
+        // Eğer seçili hasta dizide bulunuyorsa, sadece onun bilgilerini güncelleyin
+        const updatedPatients = [...doctorData.patients];
+        updatedPatients[selectedIndex] = { ...updatedPatients[selectedIndex], 
+          name: updatedPatientData.name,
+          tcNumber: updatedPatientData.tcNumber,
+          phoneNumber: updatedPatientData.phoneNumber,
+          email: updatedPatientData.email,
+          birthDate: updatedPatientData.birthDate,
+          height: updatedPatientData.height,
+          weight: updatedPatientData.weight,
+          bodyFatPercentage: updatedPatientData.bodyFatPercentage,
+          bmi: updatedPatientData.bmi,
+          gender: updatedPatientData.gender,
+          targetWeight: updatedPatientData.targetWeight };
+          
+          // Firestore'daki verileri güncelleyin
+          await doctorRef.update({ patients: updatedPatients });
+          
+          // React state'i güncelleyin
+          setPatients(updatedPatients);
+          setIsUpdating(false);
+          setSelectedPatient(null);
+        setUpdatedPatientData({
+          name: "",
+          tcNumber: "",
+          phoneNumber: "",
+          email: "",
+          birthDate: "",
+          height: "",
+          weight: "",
+          bodyFatPercentage: "",
+          bmi: "",
+          gender: "",
+          targetWeight: "",
+        });
+      
     } catch (error) {
-      console.error("Error updating patient:", error);
+      console.error("Hasta güncelleme hatası:", error);
     }
   };
   
@@ -134,30 +161,34 @@ const PatientList = ({currentUser}) => {
     setShowPopup(false);
   };
 
-  const handleAddPatientSubmit = async (newPatientData) => {
-    try {
-      const docRef = firestore.collection("doctors").doc(currentUser.uid);
-      const patientId = docRef.id;
-  
-      // Ekleme işlemi yapmadan önce mevcut hastaları al
-      const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
-      const doctorSnapshot = await doctorRef.get();
-      const doctorData = doctorSnapshot.data();
-      const existingPatients = doctorData.patients || [];
-  
-      // Yeni hastayı ekleyerek güncellenmiş hastalar dizisini oluştur
-      const updatedPatients = [...existingPatients, { id: patientId, ...newPatientData }];
-      await doctorRef.update({ patients: updatedPatients });
-  
-      const newPatient = { id: patientId, ...newPatientData };
-      setPatients((prevPatients) => [...prevPatients, newPatient]);
-      
-      setSelectedPatient(null);
-      setShowPopup(false);
-    } catch (error) {
-      console.error("Error adding patient:", error);
-    }
-  };
+  function generateRandomId() {
+  // Benzersiz bir kimlik oluşturmak için zaman damgasını kullanabilirsiniz.
+  return Date.now().toString(36) + Math.random().toString(36).substring(2);
+}
+
+
+const handleAddPatientSubmit = async (newPatientData) => {
+  try {
+    // Ekleme işlemi yapmadan önce mevcut hastaları al
+    const doctorRef = firestore.collection("doctors").doc(currentUser.uid);
+    const doctorSnapshot = await doctorRef.get();
+    const doctorData = doctorSnapshot.data();
+    const existingPatients = doctorData.patients || [];
+
+    const patientId = generateRandomId();
+    // Yeni hastayı ekleyerek güncellenmiş hastalar dizisini oluştur
+    const updatedPatients = [...existingPatients, { id: patientId, ...newPatientData }];
+    await doctorRef.update({ patients: updatedPatients });
+
+    const newPatient = { id: patientId, ...newPatientData };
+    setPatients((prevPatients) => [...prevPatients, newPatient]);
+
+    setSelectedPatient(null);
+    setShowPopup(false);
+  } catch (error) {
+    console.error("Error adding patient:", error);
+  }
+};
   
 
   return (
@@ -171,6 +202,12 @@ const PatientList = ({currentUser}) => {
         />
         <button onClick={handleAddPatient}>Ekle</button>
       </div>
+        <div className="patient-title">
+        <p>Danışanın</p>
+        <p className="patient-titles">Adı </p>
+        <p className="patient-titles">T.C. Nosu </p>
+        </div>
+      
       <div className="patient-list">
       {filteredPatients.map((patient) => (
   <div
@@ -182,13 +219,14 @@ const PatientList = ({currentUser}) => {
       {patient.gender === "male" ? "Bay" : "Bayan"}
     </div>
     <div className="patient-info">
-      <span className="patient-name">{patient.name}</span>
-      <span className="patient-tc">{patient.tcNumber}</span>
+      <span className="patient-infos">{patient.name}</span>
+      <span className="patient-infoss">{patient.tcNumber}</span>
     </div>
     
       <div className="patient-actions">
         <button onClick={() => setIsUpdating(true)}>Düzenle</button>
-        <button onClick={() => handleDeletePatient(selectedPatient.id)}>Sil</button>
+        <button onClick={(event) => handleDeletePatient(event, patient, patient.id)}>Sil</button>
+
         <PDFButton patient={patient} />
       </div>
       

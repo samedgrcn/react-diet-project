@@ -1,6 +1,6 @@
 /* PatientList.css */
 .patient-list-container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -22,10 +22,18 @@
 .search-bar {
   display: flex;
   align-items: center;
-  margin-right: 40px;
+  margin-right: 0px;
+}
+
+.search-bar input{
+    width: 600px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 .search-bar button{
-  margin-left: 8rem;
+  margin-left: 7.2rem;
 }
 
 .input-field {
@@ -131,9 +139,37 @@
   background-color: #ff69b4;
   color: #fff;
 }
-
+.patient-title{
+  display: flex;
+  flex-direction:row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 0;
+  margin-right: 30rem;
+}
+.patient-titles{
+  display: flex;
+  flex-direction:row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 60px;
+  margin-right: 12rem;
+}
 .patient-info {
   flex: 1;
+  flex-direction:row;
+  align-items: center;
+  justify-content: space-between;
+}
+.patient-infos {
+  position:relative;
+  flex-direction:row;
+  left: 2rem;
+}
+.patient-infoss {
+  margin-left: 200px;
+  flex-direction:row;
+  
 }
 
 .patient-actions {
